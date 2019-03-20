@@ -3,7 +3,7 @@ module Parte_1 (HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0, SW, CLOCK_50);
 	input CLOCK_50;
 	output [6:0] HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0;
 	
-	wire [7:0]q;
+	wire [7:0]ram_out;
 	
 	//module decoder (input [3:0]entrada, output reg[6:0]saida);
 	decoder dec0(SW[3:0], HEX0);
@@ -17,5 +17,5 @@ module Parte_1 (HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0, SW, CLOCK_50);
 	
 	
 	//module ramlpm (input	[4:0] address,input clock,input	[7:0] data,input wren,output [7:0]q);
-	ramlpm ram(SW[4:0], CLOCK_50, SW[17:10], SW[7], q);
+	ramlpm ram(SW[4:0], CLOCK_50, SW[17:10], SW[7], ram_out);
 endmodule
