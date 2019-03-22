@@ -12,8 +12,8 @@ module Parte_1 (HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0, SW, CLOCK_50);
 	decoder dec2(SW[13:10], HEX4);
 	decoder dec3(SW[17:14], HEX5);
 	
-	decoder dec4(q[3:0], HEX6);
-	decoder dec5(q[7:4], HEX7);
+	decoder dec4(ram_out[3:0], HEX6);
+	decoder dec5(ram_out[7:4], HEX7);
 	
 	
 	//module ramlpm (input	[4:0] address,input clock,input	[7:0] data,input wren,output [7:0]q);
