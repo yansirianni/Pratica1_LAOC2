@@ -29,8 +29,6 @@ timing
 *.hex
 *.html
 *.jdi
-*.jpg
-*.mif
 *.pin
 *.pof
 *.ptf.*
@@ -43,7 +41,6 @@ timing
 *.sopc_builder
 *.summary
 *.tcl
-*.txt # Explicitly add any text files used
 *~
 *example*
 *sopc_*
