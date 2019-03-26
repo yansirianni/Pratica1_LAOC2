@@ -27,7 +27,6 @@ timing
 *.done
 *.eqn
 *.hex
-*.html
 *.jdi
 *.pin
 *.pof

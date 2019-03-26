@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gerador HTML</title>
+</head>
+<body>
+    <div class="container" style="width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center">
+        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; width: 20vw">
+            <h1>Data:</h1>
+            <input id="data" type="text" maxlength="8">
+        </div>
+        <div id="writeEnable" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;  width: 20vw">
+                <h1>Write Enable:</h1>
+                <input id="checkBox" type="checkbox">
+        </div>
+        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;  width: 20vw">
+            <h1>RAM Address:</h1>
+            <input id="ramAdress" type="text" maxlength="5">
+        </div>
+        <div style="width: 300px; height: 60px;">
+            <input id="btn" type="button" value="GERAR" style="font-size: 20px; width: 300px; height: 60px;" onclick="clickHandler()">
+        </div>
+    </div>
+    <script>
+        function clickHandler (e) {
+
+            var checkBox = document.getElementById("checkBox").checked;
+            var data = document.getElementById("data").value;
+            var ramAdress =  document.getElementById("ramAdress").value;
+
+            for(var cont = data.length; cont < 8; cont++)
+                data = "0".concat(data);
+
+            for(var cont = ramAdress.length; cont < 5; cont++)
+                ramAdress = "0".concat(ramAdress);
+            
+            if(checkBox)
+                checkBox = "00100";
+            else
+                checkBox = "00000";
+
+            alert(data.concat(checkBox, ramAdress));
+        }
+    </script>
+</body>
+</html>

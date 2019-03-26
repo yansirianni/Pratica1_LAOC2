@@ -1,4 +1,4 @@
-// megafunction wizard: %RAM: 1-PORT%VBB%
+// megafunction wizard: %RAM: 1-PORT%
 // GENERATION: STANDARD
 // VERSION: WM1.0
 // MODULE: altsyncram 
@@ -17,6 +17,7 @@
 // 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition
 // ************************************************************
 
+
 //Copyright (C) 1991-2013 Altera Corporation
 //Your use of Altera Corporation's design tools, logic functions 
 //and other software and tools, and its AMPP partner logic 
@@ -31,6 +32,10 @@
 //Altera or its authorized distributors.  Please refer to the 
 //applicable agreement for further details.
 
+
+// synopsys translate_off
+`timescale 1 ps / 1 ps
+// synopsys translate_on
 module ramlpm (
 	address,
 	clock,
@@ -50,6 +55,50 @@ module ramlpm (
 `ifndef ALTERA_RESERVED_QIS
 // synopsys translate_on
 `endif
+
+	wire [7:0] sub_wire0;
+	wire [7:0] q = sub_wire0[7:0];
+
+	altsyncram	altsyncram_component (
+				.address_a (address),
+				.clock0 (clock),
+				.data_a (data),
+				.wren_a (wren),
+				.q_a (sub_wire0),
+				.aclr0 (1'b0),
+				.aclr1 (1'b0),
+				.address_b (1'b1),
+				.addressstall_a (1'b0),
+				.addressstall_b (1'b0),
+				.byteena_a (1'b1),
+				.byteena_b (1'b1),
+				.clock1 (1'b1),
+				.clocken0 (1'b1),
+				.clocken1 (1'b1),
+				.clocken2 (1'b1),
+				.clocken3 (1'b1),
+				.data_b (1'b1),
+				.eccstatus (),
+				.q_b (),
+				.rden_a (1'b1),
+				.rden_b (1'b1),
+				.wren_b (1'b0));
+	defparam
+		altsyncram_component.clock_enable_input_a = "BYPASS",
+		altsyncram_component.clock_enable_output_a = "BYPASS",
+		altsyncram_component.init_file = "Parte_2.mif",
+		altsyncram_component.intended_device_family = "Cyclone II",
+		altsyncram_component.lpm_hint = "ENABLE_RUNTIME_MOD=NO",
+		altsyncram_component.lpm_type = "altsyncram",
+		altsyncram_component.numwords_a = 32,
+		altsyncram_component.operation_mode = "SINGLE_PORT",
+		altsyncram_component.outdata_aclr_a = "NONE",
+		altsyncram_component.outdata_reg_a = "UNREGISTERED",
+		altsyncram_component.power_up_uninitialized = "FALSE",
+		altsyncram_component.widthad_a = 5,
+		altsyncram_component.width_a = 8,
+		altsyncram_component.width_byteena_a = 1;
+
 
 endmodule
 
@@ -75,7 +124,7 @@ endmodule
 // Retrieval info: PRIVATE: JTAG_ENABLED NUMERIC "0"
 // Retrieval info: PRIVATE: JTAG_ID STRING "NONE"
 // Retrieval info: PRIVATE: MAXIMUM_DEPTH NUMERIC "0"
-// Retrieval info: PRIVATE: MIFfilename STRING "../Parte_1.mif"
+// Retrieval info: PRIVATE: MIFfilename STRING "Parte_2.mif"
 // Retrieval info: PRIVATE: NUMWORDS_A NUMERIC "32"
 // Retrieval info: PRIVATE: RAM_BLOCK_TYPE NUMERIC "0"
 // Retrieval info: PRIVATE: READ_DURING_WRITE_MODE_PORT_A NUMERIC "3"
@@ -92,7 +141,7 @@ endmodule
 // Retrieval info: LIBRARY: altera_mf altera_mf.altera_mf_components.all
 // Retrieval info: CONSTANT: CLOCK_ENABLE_INPUT_A STRING "BYPASS"
 // Retrieval info: CONSTANT: CLOCK_ENABLE_OUTPUT_A STRING "BYPASS"
-// Retrieval info: CONSTANT: INIT_FILE STRING "../Parte_1.mif"
+// Retrieval info: CONSTANT: INIT_FILE STRING "Parte_2.mif"
 // Retrieval info: CONSTANT: INTENDED_DEVICE_FAMILY STRING "Cyclone II"
 // Retrieval info: CONSTANT: LPM_HINT STRING "ENABLE_RUNTIME_MOD=NO"
 // Retrieval info: CONSTANT: LPM_TYPE STRING "altsyncram"
@@ -119,5 +168,5 @@ endmodule
 // Retrieval info: GEN_FILE: TYPE_NORMAL ramlpm.cmp FALSE
 // Retrieval info: GEN_FILE: TYPE_NORMAL ramlpm.bsf FALSE
 // Retrieval info: GEN_FILE: TYPE_NORMAL ramlpm_inst.v FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL ramlpm_bb.v TRUE
+// Retrieval info: GEN_FILE: TYPE_NORMAL ramlpm_bb.v FALSE
 // Retrieval info: LIB_FILE: altera_mf
