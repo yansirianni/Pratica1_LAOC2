@@ -1,7 +1,7 @@
-module Parte_1 (HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0, SW, CLOCK_50);
+module Parte_1 (HEX7, HEX6, HEX5, HEX4, HEX1, HEX0, SW, CLOCK_50);
 	input [17:0]SW;
 	input CLOCK_50;
-	output [6:0] HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0;
+	output [6:0] HEX7, HEX6, HEX5, HEX4, HEX1, HEX0;
 	
 	wire [7:0]ram_out;
 	
