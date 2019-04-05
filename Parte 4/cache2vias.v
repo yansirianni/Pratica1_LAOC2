@@ -7,8 +7,9 @@ module cache2vias(input[4:0] addr,
                   output [12:0] data_out);
 
   via via1(cache_index, clock, data_in, wren, data_out1);
+  via via2(cache_index, clock, data_in, wren, data_out1);
 
-  assign hit =   (data_in[12:8] == addr);
-  assign miss = ~(data_in[12:8] == addr);
+  assign hit =   (data_in[12:8] == addr) || (data_in[6:2] == addr);
+  assign miss = ~((data_in[12:8] == addr) || (data_in[6:2] == addr));
 
 endmodule
