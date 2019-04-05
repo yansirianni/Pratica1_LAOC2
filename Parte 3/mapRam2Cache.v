@@ -12,19 +12,31 @@ module mapRam2Cache (reset, clock, SW, data_out);
 	reg cache_wren;
 	reg ram_wren;
 
-	//module cache (input[2:0] address, input clock, input{12:0] data, input wren, input [11:0] q);
-	cache via1(SW[2:0], clock, SW[17:10], SW[7] && cache_wren, cache_via1_out_wire);
-	cache via2(SW[2:0], clock, SW[17:10], SW[7] && ~cache_wren, cache_via2_out_wire);
+	reg [2:0] reset_address_cache;
+	reg [12:0] reset_data_cache;
+	reg reset_wren_cache;
+
+	//module cache (input[2:0] address, input clock, input{11:0] data, input wren, input [11:0] q);
+	cache via1(SW[2:0] || address_cache, clock, reset_data_cache, (SW[7] && cache_wren) || reset_wren_cache, cache_via1_out_wire);
+	cache via2(SW[2:0] || address_cache, clock, reset_data_cache, (SW[7] && ~cache_wren) || reset_wren_cache, cache_via2_out_wire);
 
 	ramlpm ram (SW[4:0], clock, SW[17:10], SW[7] && ram_wren, ram_data_read);
 
 	always @(reset) begin
-		integer i;
+		
 		if (reset == 1'b1) begin
-			for (i=0; i < 8; i=i+1) begin
-            	via1[i] <= 11'b0; //reset cache
-				via2[i] <= 12'b0; //reset cache
-			end
+			
+			reset_wren_cache = 1'b1;
+			reset_data_cache = 12'b0;
+			reset_address_cache = 3'b0;
+
+			reset_address_cache = 3'b001;
+			reset_address_cache = 3'b010;
+			reset_address_cache = 3'b011;
+			reset_address_cache = 3'b100;
+			reset_address_cache = 3'b101;
+			reset_address_cache = 3'b110;
+			reset_address_cache = 3'b111;			
 		end
 	end
 
@@ -55,7 +67,7 @@ module mapRam2Cache (reset, clock, SW, data_out);
 				//hit
 				cache_via1_out[10] = 1'b0;
 				cache_via2_out[10] = 1'b1;
-				data_out = cache_via1_out_wire[7:0];
+				data_out = cache_via1_out[7:0];
 			end
 			else begin
 				//miss
@@ -66,6 +78,7 @@ module mapRam2Cache (reset, clock, SW, data_out);
 					cache_via1_out[7:0] = ram_data_read;
 
 					cache_via2_out[10]  = 1'b1;
+					data_out = cache_via1_out[7:0];
 				end
 				else begin
 					cache_via2_out[11] = 1'b1;
@@ -74,6 +87,7 @@ module mapRam2Cache (reset, clock, SW, data_out);
 					cache_via2_out[7:0] = ram_data_read;
 
 					cache_via1_out[10] = 1'b1;
+					data_out = cache_via2_out[7:0];
 				end
 			end
 		end
@@ -83,7 +97,7 @@ module mapRam2Cache (reset, clock, SW, data_out);
 				//hit
 				cache_via1_out[10] = 1'b1;
 				cache_via2_out[10] = 1'b0;
-				data_out = cache_via2_out_wire[7:0];
+				data_out = cache_via2_out[7:0];
 			end
 			else begin
 				//miss
@@ -94,6 +108,8 @@ module mapRam2Cache (reset, clock, SW, data_out);
 					cache_via1_out[7:0] = ram_data_read;
 
 					cache_via2_out[10]  = 1'b1;
+					
+					data_out = cache_via1_out[7:0];
 				end
 				else begin
 					cache_via2_out[11] = 1'b1;
@@ -102,6 +118,7 @@ module mapRam2Cache (reset, clock, SW, data_out);
 					cache_via2_out[7:0] = ram_data_read;
 
 					cache_via1_out[10] = 1'b1;
+					data_out = cache_via2_out[7:0];
 				end
 			end
 		end
@@ -115,6 +132,7 @@ module mapRam2Cache (reset, clock, SW, data_out);
 				cache_via1_out[7:0] = ram_data_read;
 
 				cache_via2_out[10]  = 1'b1;
+				data_out = cache_via1_out[7:0];
 			end
 			else begin
 				cache_via2_out[11] = 1'b1;
@@ -123,6 +141,8 @@ module mapRam2Cache (reset, clock, SW, data_out);
 				cache_via2_out[7:0] = ram_data_read;
 
 				cache_via1_out[10] = 1'b1;
+				
+				data_out = cache_via2_out[7:0];
 			end
 		end
 	end
