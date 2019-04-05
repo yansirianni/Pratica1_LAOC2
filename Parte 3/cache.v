@@ -47,7 +47,7 @@ module cache (
 	input	  clock;
 	input	[11:0]  data;
 	input	  wren;
-	output	[11:0]  q;
+	output [11:0]  q;
 `ifndef ALTERA_RESERVED_QIS
 // synopsys translate_off
 `endif

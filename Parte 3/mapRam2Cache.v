@@ -29,29 +29,101 @@ module mapRam2Cache (reset, clock, SW, data_out);
 	end
 
 	always @(posedge clock) begin
+		cache_via1_out = cache_via1_out_wire;
+		cache_via2_out = cache_via2_out_wire;
+		
+		if (reset == 1'b1) begin
+			cache_wren = 1'b0;
+		end
+		
+		if (SW[7] == 1'b1) begin
+			ram_wren = 1'b1;
+			if (cache_via1_out[10] == 1'b1) begin
+				cache_wren = 1'b1;
+				cache_via1_out[10] = 1'b0;
+				cache_via2_out[10] = 1'b1;
+			end
+			else begin
+				cache_wren = 1'b0;
+				cache_via1_out[10] = 1'b1;
+				cache_via1_out[10] = 1'b0;
+			end
+		end
+
 		if (cache_via1_out_wire[11] == 1) begin // checa se o bit de validade da via eh 1
 			if (cache_via1_out_wire[9:8] == SW[4:3]) begin //confere se a tag gravada na via eh igual a tag do endereco solicitado
 				//hit
+				cache_via1_out[10] = 1'b0;
+				cache_via2_out[10] = 1'b1;
 				data_out = cache_via1_out_wire[7:0];
 			end
 			else begin
 				//miss
+				if (cache_via1_out[10] == 1'b1) begin
+					cache_via1_out[11] = 1'b1;
+					cache_via1_out[10]  = 1'b0;
+					cache_via1_out[9:8] = SW[4:3];
+					cache_via1_out[7:0] = ram_data_read;
 
+					cache_via2_out[10]  = 1'b1;
+				end
+				else begin
+					cache_via2_out[11] = 1'b1;
+					cache_via2_out[10]  = 1'b0;
+					cache_via2_out[9:8] = SW[4:3];
+					cache_via2_out[7:0] = ram_data_read;
+
+					cache_via1_out[10] = 1'b1;
+				end
 			end
 		end
 
 		if (cache_via2_out_wire[11] == 1'b1) begin // checa se o bit de validade da via eh 1
 			if (cache_via2_out_wire[9:8] == SW[4:3]) begin //confere se a tag gravada na via eh igual a tag do endereco solicitado
 				//hit
+				cache_via1_out[10] = 1'b1;
+				cache_via2_out[10] = 1'b0;
 				data_out = cache_via2_out_wire[7:0];
 			end
 			else begin
 				//miss
+				if (cache_via1_out[10] == 1'b1) begin
+					cache_via1_out[11] = 1'b1;
+					cache_via1_out[10]  = 1'b0;
+					cache_via1_out[9:8] = SW[4:3];
+					cache_via1_out[7:0] = ram_data_read;
+
+					cache_via2_out[10]  = 1'b1;
+				end
+				else begin
+					cache_via2_out[11] = 1'b1;
+					cache_via2_out[10]  = 1'b0;
+					cache_via2_out[9:8] = SW[4:3];
+					cache_via2_out[7:0] = ram_data_read;
+
+					cache_via1_out[10] = 1'b1;
+				end
 			end
 		end
 
 		else begin
-				//miss
+			//miss
+			if (cache_via1_out[10] == 1'b1) begin
+				cache_via1_out[11] = 1'b1;
+				cache_via1_out[10]  = 1'b0;
+				cache_via1_out[9:8] = SW[4:3];
+				cache_via1_out[7:0] = ram_data_read;
+
+				cache_via2_out[10]  = 1'b1;
+			end
+			else begin
+				cache_via2_out[11] = 1'b1;
+				cache_via2_out[10]  = 1'b0;
+				cache_via2_out[9:8] = SW[4:3];
+				cache_via2_out[7:0] = ram_data_read;
+
+				cache_via1_out[10] = 1'b1;
+			end
 		end
 	end
 endmodule
