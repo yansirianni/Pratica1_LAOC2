@@ -31,14 +31,14 @@ module Parte3(input[17:0] SW,
 
   assign HEX2 = 7'b1111111;
   assign HEX3 = 7'b1111111;
-  assign HEX4 = 7'b1111111;
-  assign HEX5 = 7'b1111111;
 
-  decoder H0(SW[3:0], HEX0);
-  decoder H1({3'b0,SW[4]}, HEX1);
-  // decoder H4();
-  // decoder H5();
-  decoder H6(Data_out[3:0], HEX6);
+  decoder H0(SW[3:0], HEX0); //Addr
+  decoder H1({2'b0,SW[4:3]}, HEX1);
+  
+  decoder H4(SW[13:10], HEX4); //Data write
+  decoder H5(SW[17:14], HEX5);
+  
+  decoder H6(Data_out[3:0], HEX6); //Data Out
   decoder H7(Data_out[7:4], HEX7);
 
 endmodule
