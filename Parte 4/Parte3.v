@@ -22,12 +22,13 @@ endmodule
 
 module Parte3(input[17:0] SW,
               input[3:0] Key,
+				  input clock_modelsim,
               output[17:0] LEDR,
               output[8:0] LEDG,
               output[12:0] Data_out,
               output [6:0] HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0);
 
-	cache2vias cache(SW[4:0], Key[2], SW[7], SW[17:5], LEDG[0], LEDR[17], Data_out);
+	cache2vias cache(SW[4:0], Key[2] || clock_modelsim, SW[7], SW[17:10], LEDG[0], LEDR[17], Data_out);
 
   assign HEX2 = 7'b1111111;
   assign HEX3 = 7'b1111111;
