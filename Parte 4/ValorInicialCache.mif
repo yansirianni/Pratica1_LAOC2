@@ -21,7 +21,7 @@ ADDRESS_RADIX=UNS;
 DATA_RADIX=UNS;
 
 CONTENT BEGIN
-	0  :   2048;
+	0  :   0;
 	1  :   2049;
-	[2..7]  :   2048;
+	[2..7]  :   0;
 END;
