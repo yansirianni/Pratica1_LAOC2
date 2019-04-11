@@ -21,20 +21,20 @@ module decoder (input [3:0]entrada, output reg[6:0]saida);
 endmodule
 
 module Parte3(input[17:0] SW,
-              input[3:0] Key,
+              input[3:0] KEY,
 				  input clock_modelsim,
               output[17:0] LEDR,
               output[8:0] LEDG,
               output[12:0] Data_out,
               output [6:0] HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0);
 
-	cache2vias cache(SW[4:0], Key[2] || clock_modelsim, SW[7], SW[17:10], LEDG[0], LEDR[17], Data_out);
+	cache2vias cache(SW[4:0], KEY[2], SW[7], SW[17:10], LEDG[0], LEDR[17], Data_out);
 
   assign HEX2 = 7'b1111111;
   assign HEX3 = 7'b1111111;
 
   decoder H0(SW[3:0], HEX0); //Addr
-  decoder H1({2'b0,SW[4:3]}, HEX1);
+  decoder H1({3'b0,SW[4]}, HEX1);
   
   decoder H4(SW[13:10], HEX4); //Data write
   decoder H5(SW[17:14], HEX5);
