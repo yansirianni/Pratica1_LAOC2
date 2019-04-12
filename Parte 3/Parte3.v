@@ -33,7 +33,7 @@ module Parte3(input[17:0] SW,
   assign HEX2 = 7'b1111111;
   assign HEX3 = 7'b1111111;
 
-  decoder H0(SW[3:0], HEX0); //Addr
+  decoder H0(SW[3:0], HEX0); //Address main memory
   decoder H1({3'b0,SW[4]}, HEX1);
   
   decoder H4(SW[13:10], HEX4); //Data write

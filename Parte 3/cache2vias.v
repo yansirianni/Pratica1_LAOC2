@@ -28,10 +28,12 @@ module cache2vias(input[4:0] addr,
   mux2_1_12bits d_write_mux1({data_out_via1[11],~data_out_via1[10],data_out_via1[9:0]}, {1'b1,data_out_via2[10],addr[4:3],data_in}, (wren || miss) && data_out_via1[10], d_out_mux1);
   //seleciona o dado de entrada para escrita na cache. Dado / Mod LRU - VIA 2
   mux2_1_12bits d_write_mux2({data_out_via2[11],~data_out_via2[10],data_out_via2[9:0]}, {1'b1,data_out_via1[10],addr[4:3],data_in}, (wren || miss) && ~data_out_via1[10], d_out_mux2);
-  
-  mux2_1_12bits d_out_module(data_out_via1[7:0], data_out_via2[7:0], data_out_via1[10], data_out);
+  //seleciona qual saida de via vai para a placa
+  mux2_1_12bits d_out_module(data_out_via1[7:0], data_out_via2[7:0], (data_out_via1[9:8] == addr[4:3] ? 1'b0 : 1'b1), data_out);
   
 /*
+	CACHE DE 2 VIAS COM DUAL-CLOCK PARA READ E WRITE
+
 	input	[11:0]  data;
 	input	[2:0]  rdaddress;
 	input	  rdclock;
@@ -41,10 +43,10 @@ module cache2vias(input[4:0] addr,
 	output	[11:0]  q;
 */
 	
+	//vias de cache
 	via via1(d_out_mux1, addr[2:0], clock, addr[2:0], ~clock, (wren || miss), data_out_via1);
 	via via2(d_out_mux2, addr[2:0], clock, addr[2:0], ~clock, (wren || miss), data_out_via2);
-  //via via1(addr[2:0], clock, d_out_mux1, ((wren || miss) && (~clock)), data_out_via1);
-  //via via2(addr[2:0], clock, d_out_mux2, ((wren || miss) && (~clock)), data_out_via2);
+  
   
   assign lru_via1 = data_out_via1[10];
   assign lru_via2 = data_out_via2[10];
@@ -53,9 +55,5 @@ module cache2vias(input[4:0] addr,
   assign hit =   ((data_out_via1[11] || data_out_via2[11]) && ((data_out_via1[9:8] == addr[4:3]) || (data_out_via2[9:8] == addr[4:3]))); //verifica se deu hit
   assign miss = ~hit; //verifica se deu miss
   
-  //assign miss = ~(data_out_via1[11] && ((data_out_via1[9:8] == addr[4:3]) || (data_out_via2[9:8] == addr[4:3]))); //verifica se deu miss
-  
-  //assign data_write1 = ((({1'b1,~data_out_via1[10],addr[4:3],data_in}) && (wren && data_out_via1[10])) || (({data_out_via1[11], ~data_out_via1[10], data_out_via1[9:0]}) && ~(wren &&  data_out_via1[10])));
-  //assign data_write2 = (({1'b1,data_out_via1[10],addr[4:3],data_in} && (wren &&  ~data_out_via1[10])) || ({data_out_via2[11], ~data_out_via2[10], data_out_via2[9:0]} && ~(wren &&  ~data_out_via1[10])));
-
+ 
 endmodule
